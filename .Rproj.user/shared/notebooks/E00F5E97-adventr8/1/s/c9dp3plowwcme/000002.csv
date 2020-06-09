@@ -1,0 +1,20 @@
+"0","speed_vision <- "
+"2","Warning messages:
+"
+"2","1: "
+"2","In readChar(file, size, TRUE) :"
+"2"," truncating string with embedded nuls
+"
+"2","2: "
+"2","In readChar(file, size, TRUE) :"
+"2"," truncating string with embedded nuls
+"
+"0","  jig_tib %>%"
+"0","  dplyr::group_by(employee, sex) %>%"
+"0","  dplyr::summarise("
+"0","    mean_speed = mean(vision),"
+"0","    ci_low = ggplot2::mean_cl_normal(vision)$ymin,"
+"0","    ci_upper = ggplot2::mean_cl_normal(vision)$ymax"
+"0","  )"
+"0",""
+"0","speed_vision"

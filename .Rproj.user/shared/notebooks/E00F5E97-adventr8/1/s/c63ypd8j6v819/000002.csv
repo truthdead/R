@@ -1,0 +1,7 @@
+"0","strength_plot <- ggplot(jig_tib, aes(employee, strength, colour = sex))"
+"0","strength_plot +"
+"0","  stat_summary(fun.data = ""mean_cl_normal"", geom = ""pointrange"", position = position_dodge(width = 0.9)) +"
+"0","  labs(x = ""Employee status"", y = ""Maximal push force (n)"") +"
+"0","  coord_cartesian(ylim = c(1000, 1800)) +"
+"0","  scale_y_continuous(breaks = seq(1000, 1800, 100)) +"
+"0","  theme_bw()"

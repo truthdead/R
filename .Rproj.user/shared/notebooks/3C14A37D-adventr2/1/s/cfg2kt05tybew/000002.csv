@@ -1,0 +1,19 @@
+"0","ha_tib <- readr::read_csv(""../data/ais_ch03_ha.csv"")"
+"2","Parsed with column specification:
+cols(
+  ID = [32mcol_double()[39m,
+  ageYears = [32mcol_double()[39m,
+  Sex = [31mcol_character()[39m,
+  HighSalary = [32mcol_double()[39m,
+  FinishedEducation = [32mcol_double()[39m,
+  Kind = [32mcol_double()[39m,
+  Humour = [32mcol_double()[39m,
+  Ambitious = [32mcol_double()[39m,
+  WantsChildren = [32mcol_double()[39m,
+  Romantic = [32mcol_double()[39m,
+  AttractiveAppearance = [32mcol_double()[39m,
+  Creativity = [32mcol_double()[39m,
+  Honest = [32mcol_double()[39m
+)
+"
+"0","ha_tib"

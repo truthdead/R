@@ -1,0 +1,3 @@
+"0","ras_no_outlier <- ras_tib %>% "
+"0","  dplyr::filter(Rating != 11)"
+"0","ras_no_outlier"

@@ -1,0 +1,86 @@
+---
+title: "adventr2"
+author: "Nival Kolambage"
+date: "5/26/2020"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+#This is the 'adventr' tutorial by Prof.Andy Field.
+
+##Adventr_02
+
+Names of the Band Members
+```{r}
+name <- c('Sudari', 'Nival', 'Nishali', 'Naveen')
+name
+```
+
+Age of the members
+```{r}
+age <- c(27, 30, 19, 26)
+```
+
+Sex of members
+```{r}
+sex <- c(1, 0, 1, 0)
+factor(sex, levels = 0:1, labels = c('Male', 'Female'))
+sex
+```
+Alternative way to factorize sex: foracts pkg from tidyverse
+```{r}
+sex <- c("Female", "Male", "Female", "Male")
+sex <- forcats::as_factor(sex)
+sex
+sex <- forcats::fct_relevel(sex, "Male", "Female")
+sex
+```
+
+Loading the data that Prof Pincus uses to help Zach explore what attributes women look for in men in Chapter 3 of the book
+
+```{r}
+ha_tib <- readr::read_csv("../data/ais_ch03_ha.csv")
+ha_tib
+```
+
+Accessing 'Ambitious' in ha_tib
+```{r}
+ha_tib$Ambitious
+```
+
+
+Squaring 'Humour'
+
+```{r}
+
+library(dplyr)
+ha_tib <- ha_tib %>%
+  dplyr::mutate(humour_sq = (Humour**2))
+ha_tib
+```
+
+Filtering girls less than 16
+
+```{r}
+ha_tib_16 <- ha_tib %>%
+  dplyr::filter (ageYears >= 16)
+ha_tib_16
+```
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

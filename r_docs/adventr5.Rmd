@@ -1,0 +1,222 @@
+---
+title: "adventr5"
+author: "Nival Kolambage"
+date: "5/27/2020"
+output: html_document
+---
+
+In chapter 5 of An Adventure in Statistics Milton and Zach attend a recruitment event by a corporation called JIG:SAW. During it, Rob Nutcot presents data about JIG:SAW’s genetic enhancement programme. Afterwards he hands Zach a brochure full of graphs of data comparing JIG:SAW employees to non-employees on various physical attributes such as speed (footspeed), visual acuity (vision) and strength. Zach can’t interpret these graphs. Milton takes Zach to visit Dr Sisyphus Tuff in a bar called ‘6’ located in the Evil Pockets, an uninhabited part of the city of Elpis that attracted ‘undesirables’. Dr Tuff is an expert in visualizing data but has been driven slightly crazy by his quest for visual perfection.
+
+The data from which Rob Nutcot’s graphs were generated are in the tibble called jig_tib :
+
+```{r}
+library(tidyverse)
+
+jig_tib <- readr::read_csv("../data/ais_05_jigsaw.csv")
+```
+
+
+In several graphs in Nutcot’s report the data are summarized by group (for example JIG:SAW employees vs. non-employees). We can summarize data by applying the group_by() and summarize() functions from the tidyverse package (specifically the dplyr package) to our tibble. Here what "summarize" does is adding the computed mean of the variable to the newly created varaible "mean_vis"
+
+Some intuition on the summarize() via study.com:*As its name implies, the summarize function reduces a data frame to a summary of just one vector or value. Many times these summaries are calculated by grouping observations using a factor or categorical variables first. This is done with the function group_by, the dynamic duo of summarize.*
+
+Let's do it!:
+```{r}
+vis_mean <-
+  jig_tib %>%
+  dplyr::group_by(employee) %>%
+  dplyr::summarize(
+    mean_vis = mean(vision)
+    )
+vis_mean
+```
+
+
+Let's now create a tibble called *strength_mean*, which contains the **mean of the variable strength split by employee status and biological sex**.
+```{r}
+strength_mean <-
+  jig_tib %>%
+  dplyr::group_by(employee, sex) %>%
+  dplyr::summarize(
+    mean_strength = mean(strength)
+    )
+strength_mean
+```
+
+We’re not restricted to the mean, we can use all of the functions that we learnt about in the previous tutorial (var(), median(), sd() etc.) within the summarize function. Let's do this for *footspeed* variable!
+```{r}
+speed_sum <-
+  jig_tib %>%
+  dplyr::group_by(employee, sex) %>%
+  dplyr::summarize(
+    mean_speed = mean(footspeed),
+    med_speed = median(footspeed),
+    var_speed = var(footspeed),
+    sd_speed = sd(footspeed),
+    iqr_speed = IQR(footspeed, type = 8)
+    )
+
+speed_sum
+```
+
+
+Let's do the same thing to the *strength* of these folks!
+```{r}
+strength_sum <-
+  jig_tib %>%
+  dplyr::group_by(employee, sex) %>%
+  dplyr::summarize(
+    mean_strength = mean(strength),
+    med_strength = median(strength),
+    var_strength = var(strength),
+    sd_strength = sd(strength),
+    iqr_strength = IQR(strength, type = 8)
+    )
+
+strength_sum
+```
+
+Figure 5.6 in An adventure in statistics shows a boxplot of footspeed split by employee. This is easy to create in ggplot using the geom_boxplot() function. We could set up the plot with this command:
+```{r}
+speed_box <- ggplot2::ggplot(jig_tib, aes(employee, footspeed))
+speed_box +
+  geom_boxplot() +
+  labs(x = "Employee status", y = "Footspeed (mph)") +
+  theme_bw()
+```
+
+
+You can add a third variable to ggplot() function as fill or colour to furthur split the data :
+```{r}
+speed_box <- ggplot2::ggplot(jig_tib, aes(employee, footspeed, colour=sex))
+speed_box +
+  geom_boxplot() +
+  labs(x = "Employee status", y = "Footspeed (mph)", colour = "Biological sex") +
+  theme_bw()
+
+speed_box <- ggplot2::ggplot(jig_tib, aes(employee, footspeed, fill = sex))
+speed_box +
+  geom_boxplot() +
+  labs(x = "Employee status", y = "Footspeed (mph)", fill = "Biological sex") +
+  theme_bw()
+```
+
+
+What if you want to change the colours that are used to fill the boxes or the box outlines? That’s easy. You can add the scale_fill_manual() or scale_colour_manual() functions to the command. Both functions have a similar syntax:
+```{r}
+speed_box <- ggplot2::ggplot(jig_tib, aes(employee, footspeed, fill = sex))
+speed_box +
+  geom_boxplot() +
+  labs(x = "Employee status", y = "Footspeed (mph)", fill = "Biological sex") +
+  scale_fill_manual(values = c("#56B4E9", "#E69F00")) +
+  theme_bw()
+```
+
+
+Plotting the means as a "geom_point". Here we are straightaway plotting from raw data, hence using the function *stat_summmary* :
+```{r}
+strength_plot <- ggplot2::ggplot(jig_tib, aes(employee, strength))
+strength_plot +
+  stat_summary(fun = "mean", geom = "point", size = 4)
+```
+
+
+The above graph can be made more comprehensible by adding the following :
+
+*labs(x = "Employee status", y = "Maximal push force (n)") to label the axes*
+*coord_cartesian(ylim = c(1000, 1800)) to adjust the y-axis to display values from 1000 to 1800*
+*scale_y_continuous(breaks = seq(1000, 1800, 100)) to set the breaks on the y-axis* 
+(I’ve used the function seq() which takes the form **seq(from, to, by** where from is the value you want to start at, to is the value you want to stop at, and by is the size of the increment you want.) 
+*theme_bw() to apply a black and white theme*
+
+Let's go:
+```{r}
+strength_plot <- ggplot2::ggplot(jig_tib, aes(employee, strength))
+strength_plot +
+  stat_summary(fun= 'mean', geom= 'point', size = 4)+
+  labs(x = 'Employee status', y = 'Maximum push force(N)')+
+  coord_cartesian(ylim = c(1000, 1800))+
+  scale_y_continuous(breaks = seq(1000, 1800, 100))+
+  theme_minimal()
+```
+
+
+If you want to group means by a second categorical varaible, you can use *facet_wrap()* to create several plots:
+
+**facet_wrap(facet, nrow = NULL, ncol = NULL, scales = "fixed")**
+
+Here, facet is the grouping variable, whereas nrow and ncol specifies how you want to stack your plots(i.e. if ncol=1 the plots will stack on top of each other). R makes a sensible choice based on your number of plots. scale specifies whether the scale of x and y is fixed in different plots.
+Sometimes it’s handy to let them vary across different plots, in which case set **scales = "free"** or use **“free_x”** or **“free_y”** to allow only the x-axis or y-axis to vary across plots.
+
+Let's do facet_wrap()! :
+```{r}
+strength_plot <- ggplot2::ggplot(jig_tib, aes(employee, strength))
+strength_plot +
+  stat_summary(fun = "mean", geom = "point", size = 4) +
+  labs(x = "Employee status", y = "Maximal push force (n)") +
+  coord_cartesian(ylim = c(1000, 1800)) +
+  scale_y_continuous(breaks = seq(1000, 1800, 100)) +
+  theme_bw()+
+  facet_wrap(~sex,scales = 'free' )
+```
+
+
+We can plot the above same data in one plot by adding an additional "colour = sex" arg to ggplot. We "dodge" the collision between male and female by adding *position = position_dodge* to stat_summary function :
+```{r}
+strength_plot <- ggplot2::ggplot(jig_tib, aes(employee, strength, colour = sex))
+strength_plot +
+  stat_summary(fun = "mean", geom = "point", size = 4, position = position_dodge(width = 0.9)) +
+  labs(x = "Employee status", y = "Maximal push force (n)") +
+  coord_cartesian(ylim = c(1000, 1800)) +
+  scale_y_continuous(breaks = seq(1000, 1800, 100)) +
+  theme_bw()
+```
+
+
+We can plot all the data(not just means) in the above plot. We need to add another layer *before* stat_summmary layer like this : **geom_point(position = position_dodge(width = 0.9), alpha = 0.3)**
+We have made a few other changes :
+*changing the limits and breaks to include the range from 900 to 2500*
+*adding a* **scale_colour_manual** *layer to customize the colours to be color-blind friendly!*
+Let's see:(note that changing the dodge position on the raw data deviates them from means)
+```{r}
+strength_plot <- ggplot2::ggplot(jig_tib, aes(employee, strength, colour = sex))
+strength_plot +
+  geom_point(position = position_dodge(width = 1), alpha = 0.3) +
+  stat_summary(fun = "mean", geom = "point", size = 4, position = position_dodge(width = 0.9)) +
+  labs(x = "Employee status", y = "Maximal push force (n)", colour = "Biological sex") +
+  coord_cartesian(ylim = c(900, 2500)) +
+  scale_y_continuous(breaks = seq(900, 2500, 100)) +
+  scale_colour_manual(values = c("#56B4E9", "#E69F00"))+
+  theme_minimal()
+```
+
+
+Let's do scatterplots now! Below plot will pit footspeed against the strength. 
+The first line creates an object called scat that uses the jig_tib tibble and from it plots footspeed on the x-axis and strength on the y-axis :
+```{r}
+scat <- ggplot2::ggplot(jig_tib, aes(footspeed, strength))
+scat +
+  geom_point()
+```
+
+
+We can use the options of geom_point() to change the colour of the points, their size, their shape (see above) and their transparency and also we can add labels of course!:
+```{r}
+scat <- ggplot2::ggplot(jig_tib, aes(footspeed, strength))
+scat +
+  geom_point(colour = "#56B4E9", size = 3, alpha = 0.7) +
+  labs(x = "Footspeed(mph)", y = "Maximal push force(N)") +
+  theme_minimal()
+```
+
+
+Finally let's add a straight line that goes through the points. You can get rid of CI range by **SE = F** :
+```{r}
+scat <- ggplot2::ggplot(jig_tib, aes(footspeed, strength))
+scat +
+  geom_point(colour = "#56B4E9", size = 3, alpha = 0.7) +
+  labs(x = "Footspeed(mph)", y = "Maximal push force(N)") +
+  theme_minimal() +
+geom_smooth(method = "lm", colour = "#E69F00", fill = "#E69F00")
+```
+

@@ -1,0 +1,18 @@
+"0","vision_plot <- ggplot(jig_tib, aes(job_type, vision, colour = employee))"
+"2","Warning messages:
+"
+"2","1: "
+"2","In readChar(file, size, TRUE) :"
+"2"," truncating string with embedded nuls
+"
+"2","2: "
+"2","In readChar(file, size, TRUE) :"
+"2"," truncating string with embedded nuls
+"
+"0","vision_plot +"
+"0","  stat_summary(fun.data = ""mean_cl_normal"", geom = ""pointrange"", position = position_dodge(width = 0.9)) +"
+"0","  labs(x = ""Job Type"" , y = ""Visual Acuity"") +"
+"0","  coord_cartesian(ylim = c(0,1)) +"
+"0","  scale_y_continuous(breaks = seq(0, 1, 0.1)) +"
+"0","  scale_x_discrete(expand=c(0.01 , 0.01 , 0.01 , 0.01)) +"
+"0","  theme_minimal()"

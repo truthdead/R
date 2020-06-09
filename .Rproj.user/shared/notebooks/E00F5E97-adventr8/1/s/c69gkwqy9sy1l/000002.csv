@@ -1,0 +1,12 @@
+"0","jig_tib <- readr::read_csv(""../data/ais_c05_jigsaw.csv"")"
+"2","Parsed with column specification:
+cols(
+  id = [32mcol_double()[39m,
+  employee = [31mcol_character()[39m,
+  job_type = [31mcol_character()[39m,
+  footspeed = [32mcol_double()[39m,
+  strength = [32mcol_double()[39m,
+  vision = [32mcol_double()[39m,
+  sex = [31mcol_character()[39m
+)
+"

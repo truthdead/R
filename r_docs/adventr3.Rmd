@@ -1,0 +1,107 @@
+---
+title: "adventr3"
+author: "Nival Kolambage"
+date: "5/27/2020"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+Loading the needed libraries
+
+```{r}
+library(tidyverse)
+```
+
+
+Loading data file 
+```{r}
+ha_tib <- readr::read_csv("../data/ais_ch03_ha.csv")
+ha_tib
+```
+
+
+Plotting 'humour' variable in a histogram :
+```{r}
+humour_hist <- ggplot(ha_tib, aes(Humour))
+humour_hist +
+  geom_histogram(binwidth = 1, color = 'black', fill = 'dark green', alpha = 0.7) +
+  labs(y = "Frequency", x = "Importance of humour (1-10)")
+```
+
+
+Customizing x scale : At the moment the x-axis is scaled from 5 to 10. Let’s show the full range of the scale. To do this we need to set the limits of the x-axis using the coord_cartesian() function:
+
+coord_cartesian(xlim = c(begin, end), ylim = c(begin, end))
+
+You set the limits of the x-axis using xlim and the limits of the y-axis with ylim. After each you specify numbers representing the start and end values for the axis. You need to collect these values into a single object by enclosing them in c(). 
+
+```{r}
+humour_hist <- ggplot(ha_tib, aes(Humour))
+humour_hist +
+  geom_histogram(binwidth = 1, color = 'black', fill = 'dark green', alpha = 0.7) +
+  labs(y = "Frequency", x = "Importance of humour (1-10)")+
+  coord_cartesian(xlim = c(1, 10))
+
+```
+
+
+Overriding the default breaks and specifying the breaks for x-axis. Last line applies a theme to change the look. Other themes include theme_classic, theme_bw, theme_dark.
+```{r}
+humour_hist <- ggplot(ha_tib, aes(Humour))
+humour_hist +
+  geom_histogram(binwidth = 1, color = 'black', fill = 'dark green', alpha = 0.7) +
+  labs(y = "Frequency", x = "Importance of humour (1-10)")+
+  coord_cartesian(xlim = c(1, 10)) +
+  scale_x_continuous(breaks = 1:10) +
+  theme_minimal()
+
+```
+
+
+
+Drawing the same above graph as a frequency polygon. You can change the line size by adding "size" arg to geom_freqpoly():
+
+```{r}
+humour_poly <- ggplot2::ggplot(ha_tib, aes(Humour))
+humour_poly +
+  geom_freqpoly(binwidth = 1, colour = "#56B4E9",size = 1.5) +
+  labs(y = "Frequency", x = "Importance of humour (1-10)") +
+  coord_cartesian(xlim = c(1, 10)) +
+  scale_x_continuous(breaks = 1:10) +
+  theme_bw()
+```
+
+
+
+We can change the style of the line by including the linetype = option in the geom_freqpoly() function. Line types can either be defined using numbers (0 = blank, 1 = solid (default), 2 = dashed, 3 = dotted, 4 = dotdash, 5 = longdash, 6 = twodash) or as text (“blank”, “solid”, “dashed”, “dotted”, “dotdash”, “longdash”, or “twodash”). 
+
+```{r}
+humour_poly <- ggplot2::ggplot(ha_tib, aes(Humour))
+humour_poly +
+  geom_freqpoly(binwidth = 1, colour = "#56B4E9",size = 1.3, linetype = 'dashed') +
+  labs(y = "Frequency", x = "Importance of humour (1-10)") +
+  coord_cartesian(xlim = c(1, 10)) +
+  scale_x_continuous(breaks = 1:10) +
+  theme_bw() 
+```
+
+
+You can draw more tha one plots in one diagram, but R will process the plots in the order they are executed:
+
+```{r}
+humour_poly <- ggplot2::ggplot(ha_tib, aes(Humour))
+
+humour_poly +
+  geom_histogram(binwidth = 1, color = 'black', fill = 'dark green', alpha = 0.7) +
+  geom_freqpoly(binwidth = 1, colour = "#56B4E9",size = 1.3, linetype = 'dashed') +
+  labs(y = "Frequency", x = "Importance of humour (1-10)") +
+  coord_cartesian(xlim = c(1, 10)) +
+  scale_x_continuous(breaks = 1:10) +
+  theme_bw() 
+
+
+```
+
+
+

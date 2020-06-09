@@ -1,0 +1,9 @@
+"0","library(tidyverse)"
+"0",""
+"0","ras_tib <- readr::read_csv(""../data/ais_04_ras.csv"")"
+"2","Parsed with column specification:
+cols(
+  Week = [32mcol_double()[39m,
+  Rating = [32mcol_double()[39m
+)
+"

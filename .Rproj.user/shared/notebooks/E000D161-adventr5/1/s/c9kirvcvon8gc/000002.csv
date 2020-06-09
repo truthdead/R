@@ -1,0 +1,3 @@
+"0","strength_plot <- ggplot2::ggplot(jig_tib, aes(employee, strength))"
+"0","strength_plot +"
+"0","  stat_summary(fun = ""mean"", geom = ""point"", size = 4)"

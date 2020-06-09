@@ -1,0 +1,5 @@
+"0","ggplot2::ggplot(data = ras_tib, aes(Rating)) +"
+"0","  geom_histogram(fill = 'dark green', alpha = 0.7, binwidth = 1) +"
+"0","  labs(y = ""Frequency"", x = ""Alice's relationship ratings(7-35)"") +"
+"0","  coord_cartesian(xlim = c(7, 35)) +"
+"0","  scale_x_continuous(breaks = 7:35)"

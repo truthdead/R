@@ -1,0 +1,6 @@
+"0",""
+"0","speed_box <- ggplot2::ggplot(jig_tib, aes(employee, footspeed, fill = sex))"
+"0","speed_box +"
+"0","  geom_boxplot() +"
+"0","  labs(x = ""Employee status"", y = ""Footspeed (mph)"", fill = ""Biological sex"") +"
+"0","  theme_bw()"

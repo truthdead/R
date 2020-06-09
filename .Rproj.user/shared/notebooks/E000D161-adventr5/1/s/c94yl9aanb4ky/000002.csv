@@ -1,0 +1,7 @@
+"0","vis_mean <-"
+"0","  jig_tib %>%"
+"0","  dplyr::group_by(employee) %>%"
+"0","  dplyr::summarize("
+"0","    mean_vis = mean(vision)"
+"0","    )"
+"0","vis_mean"

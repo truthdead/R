@@ -1,0 +1,5 @@
+"0","speed_box <- ggplot2::ggplot(jig_tib, aes(employee, footspeed))"
+"0","speed_box +"
+"0","  geom_boxplot() +"
+"0","  labs(x = ""Employee status"", y = ""Footspeed (mph)"") +"
+"0","  theme_bw()"

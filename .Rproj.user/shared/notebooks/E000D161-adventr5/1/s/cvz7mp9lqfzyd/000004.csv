@@ -1,0 +1,6 @@
+"0","scat <- ggplot2::ggplot(jig_tib, aes(footspeed, strength))"
+"0","scat +"
+"0","  geom_point(colour = ""#56B4E9"", size = 3, alpha = 0.7) +"
+"0","  labs(x = ""Footspeed(mph)"", y = ""Maximal push force(N)"") +"
+"0","  theme_minimal() +"
+"0","geom_smooth(method = ""lm"", colour = ""#E69F00"", fill = ""#E69F00"")"

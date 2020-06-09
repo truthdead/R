@@ -1,0 +1,142 @@
+---
+title: "adventr8"
+output: html_notebook
+---
+
+### Quick Review
+
+
+**What does the pipe operator (%>%) do?**
+
+*Carries any instruction on the left of the operator forward into any instrucion on the right of the operator*
+
+### Loading libraries
+
+```{r}
+library(tidyverse)
+library(Hmisc)
+```
+
+ 
+```{r}
+#getting the dataset into a tibble :
+
+jig_tib <- readr::read_csv("../data/ais_c05_jigsaw.csv")
+
+```
+
+
+**Calculating Confidence Intervals**
+
+For this we can use **mean_cl_normal()** from ggplot2 package. Remember this function also use *Hmisc* pacakge under the hood. It takes any model as its input and returns an object that contains estimates from the model and their confidence intervals. In general it takes the following form:
+
+*ggplot2::mean_cl_normal(object, conf.int = 0.95, na.rm = TRUE)*
+
+To keep things simple, imagine the ‘object’ we put into this function is a variable, like footspeed. We’d execute:
+
+*ggplot2::mean_cl_normal(jig_tib$footspeed, conf.int = 0.95, na.rm = TRUE)*
+
+To get individual elements of the CI such as mean(*y*), lower boundary(*ymin*). upper boundary(*ymax*) use the keywords in the brackets after the above code, seperating them with '$'
+
+Our execution shall clarify the above!
+
+Let's create a tibble with means and confidence intervals grouped by employee and sex by adapting the code that we’ve already used in previous tutorials to include the mean_cl_normal() function:
+
+
+```{r}
+#creating a tibble 'speed_sum' containing means and their 95% CIs
+
+speed_sum <- 
+  jig_tib %>%
+  dplyr::group_by(employee, sex) %>%
+  dplyr::summarise(
+    mean_speed = mean(footspeed),
+    ci_low = ggplot2::mean_cl_normal(footspeed)$ymin,
+    ci_upper = ggplot2::mean_cl_normal(footspeed)$ymax
+  )
+
+speed_sum
+```
+
+
+We can do the same thing to strength and vision :
+
+```{r}
+#strength
+
+speed_strength <- 
+  jig_tib %>%
+  dplyr::group_by(employee, sex) %>%
+  dplyr::summarise(
+    mean_speed = mean(strength),
+    ci_low = ggplot2::mean_cl_normal(strength)$ymin,
+    ci_upper = ggplot2::mean_cl_normal(strength)$ymax
+  )
+
+speed_strength
+```
+
+
+```{r}
+speed_vision <- 
+  jig_tib %>%
+  dplyr::group_by(employee, sex) %>%
+  dplyr::summarise(
+    mean_speed = mean(vision),
+    ci_low = ggplot2::mean_cl_normal(vision)$ymin,
+    ci_upper = ggplot2::mean_cl_normal(vision)$ymax
+  )
+
+speed_vision
+```
+
+
+
+**Plotting CIs**
+
+We are using the same code we used to plot point graphs depicting means categorized by employee status with some modifications. Main differences are :
+
+*fun.data = "mean_cl_normal"* instead of *fun = "mean"* & *geom = "pointrange"* instead of *geom = 'point'*
+
+Hopefully the code is intuitive, if not you can check out the previous "advetr5' notebook.
+
+```{r}
+strength_plot <- ggplot(jig_tib, aes(employee, strength))
+strength_plot +
+  stat_summary(fun = "mean", geom = "bar", alpha = 0.6) +
+  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange") +
+  labs(x = "Employee status", y = "Maximal push force (n)") +
+  coord_cartesian(ylim = c(1000, 1800)) +
+  scale_y_continuous(breaks = seq(1000, 1800, 100)) +
+  theme_bw()
+```
+
+
+Now let's plot the CIs separated by Sex  :
+
+```{r}
+strength_plot <- ggplot(jig_tib, aes(employee, strength, colour = sex))
+strength_plot +
+  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange", position = position_dodge(width = 0.9)) +
+  labs(x = "Employee status", y = "Maximal push force (n)") +
+  coord_cartesian(ylim = c(1000, 1800)) +
+  scale_y_continuous(breaks = seq(1000, 1800, 100)) +
+  theme_bw()
+```
+
+
+Let's plot vision scores split by job_type on the x-axis and employees and non-employees in different colours.
+
+```{r}
+vision_plot <- ggplot(jig_tib, aes(job_type, vision, colour = employee))
+vision_plot +
+  stat_summary(fun.data = "mean_cl_normal", geom = "pointrange", position = position_dodge(width = 0.9)) +
+  labs(x = "Job Type" , y = "Visual Acuity") +
+  coord_cartesian(ylim = c(0,1)) +
+  scale_y_continuous(breaks = seq(0, 1, 0.1)) +
+  scale_x_discrete(expand=c(0.01 , 0.01 , 0.01 , 0.01)) +
+  theme_minimal()
+```
+
+
+```{r}

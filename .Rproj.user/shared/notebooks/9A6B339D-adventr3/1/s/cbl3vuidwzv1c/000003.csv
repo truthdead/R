@@ -1,0 +1,8 @@
+"0","humour_hist <- ggplot(ha_tib, aes(Humour))"
+"0","humour_hist +"
+"0","  geom_histogram(binwidth = 1, color = 'black', fill = 'dark green', alpha = 0.7) +"
+"0","  labs(y = ""Frequency"", x = ""Importance of humour (1-10)"")+"
+"0","  coord_cartesian(xlim = c(1, 10)) +"
+"0","  scale_x_continuous(breaks = 1:10) +"
+"0","  theme_minimal()"
+"0",""

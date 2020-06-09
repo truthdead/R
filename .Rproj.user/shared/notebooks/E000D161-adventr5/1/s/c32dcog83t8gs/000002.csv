@@ -1,0 +1,3 @@
+"0","scat <- ggplot2::ggplot(jig_tib, aes(footspeed, strength))"
+"0","scat +"
+"0","  geom_point()"

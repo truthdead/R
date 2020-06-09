@@ -1,0 +1,106 @@
+---
+title: "adventr4"
+author: "Nival Kolambage"
+date: "5/27/2020"
+output: html_document
+---
+
+Loading the data on Alice's relationship ratings of Zack over several weeks and creating a tidyverse tibble from it.:
+
+```{r}
+library(tidyverse)
+
+ras_tib <- readr::read_csv("../data/ais_04_ras.csv")
+```
+
+
+Viewing the tibble :
+```{r}
+ras_tib
+```
+
+
+Finding the mean and median of Alice's ratings. Mean function structure *mean(variable, trim = 0, na.rm = FALSE)*. Median is the same except it has no trim because that wouldn’t make sense (the median is effectively the data with a 50% trim):
+
+```{r}
+mean(ras_tib$Rating, na.rm = TRUE)
+median(ras_tib$Rating, na.rm = TRUE)
+
+```
+
+
+Zach and Milton spot an unusual score (an outlier) in Alice’s data by plotting a histogram. Let's explore that!
+
+```{r}
+ggplot2::ggplot(data = ras_tib, aes(Rating)) +
+  geom_histogram(fill = 'dark green', alpha = 0.7, binwidth = 1) +
+  labs(y = "Frequency", x = "Alice's relationship ratings(7-35)") +
+  coord_cartesian(xlim = c(7, 35)) +
+  scale_x_continuous(breaks = 7:35)
+  theme_()
+```
+
+
+Filtering out the outlier '11'.
+
+```{r}
+ras_no_outlier <- ras_tib %>% 
+  dplyr::filter(Rating != 11)
+ras_no_outlier
+```
+
+
+Calculating the mean and median ratings from the filtered tibble :
+
+```{r}
+mean(ras_no_outlier$Rating, na.rm = TRUE)
+median(ras_no_outlier$Rating, na.rm = TRUE)
+```
+
+
+Milton also calculates the variance, standard deviation and inter-quartile range (IQR) of Alice’s ratings (without the outlier). IQR also has an arg called 'type' which specifies the way to calculate IQR. default is 7. IQR function structure : *IQR(variable_name, na.rm = FALSE, type = 7)*
+
+```{r}
+var(ras_no_outlier$Rating, na.rm = TRUE)
+sd(ras_no_outlier$Rating, na.rm = TRUE)
+IQR(ras_no_outlier$Rating, na.rm = TRUE, type = 7)
+```
+
+Above calculations *with* the Outlier.
+
+```{r}
+print('Mean is:')
+mean(ras_tib$Rating, na.rm = TRUE)
+print('Median is:')
+median(ras_tib$Rating, na.rm = TRUE)
+print('Variance is:')
+var(ras_tib$Rating, na.rm = TRUE)
+print('Standard Deviation is:')
+sd(ras_tib$Rating, na.rm = TRUE)
+print('Interquartile range is:')
+IQR(ras_tib$Rating, na.rm = TRUE, type = 8)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,7 @@
+"0","strength_mean <-"
+"0","  jig_tib %>%"
+"0","  dplyr::group_by(employee, sex) %>%"
+"0","  dplyr::summarize("
+"0","    mean_strength = mean(strength)"
+"0","    )"
+"0","strength_mean"

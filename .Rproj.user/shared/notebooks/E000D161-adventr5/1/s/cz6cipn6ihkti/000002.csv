@@ -1,0 +1,8 @@
+"0","strength_plot <- ggplot2::ggplot(jig_tib, aes(employee, strength))"
+"0","strength_plot +"
+"0","  stat_summary(fun = ""mean"", geom = ""point"", size = 4) +"
+"0","  labs(x = ""Employee status"", y = ""Maximal push force (n)"") +"
+"0","  coord_cartesian(ylim = c(1000, 1800)) +"
+"0","  scale_y_continuous(breaks = seq(1000, 1800, 100)) +"
+"0","  theme_bw()+"
+"0","  facet_wrap(~sex,scales = 'free' )"
